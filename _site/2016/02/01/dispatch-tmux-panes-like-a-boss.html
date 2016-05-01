@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Give a man a fish and he’ll eat for a day. Give a fish a man and he’ll eat for weeks.
-">
+  <title>Dispatch Tmux panes like a boss</title>
+  <meta name="description" content="I use tmux panes all the time. I’m always editing at least one set of source code in one pane, running tests in another and probable running servers and cons...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://digitalronin.github.io//about/">
+  <link rel="canonical" href="https://digitalronin.github.io//2016/02/01/dispatch-tmux-panes-like-a-boss.html">
   <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
 </head>
 
@@ -55,26 +54,59 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">Dispatch Tmux panes like a boss</h1>
+    <p class="post-meta"><time datetime="2016-02-01T00:00:00+00:00" itemprop="datePublished">Feb 1, 2016</time></p>
   </header>
 
-  <div class="post-content">
-    <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="http://jekyllrb.com/">jekyllrb.com</a></p>
+  <div class="post-content" itemprop="articleBody">
+    <p>I use <a href="https://tmux.github.io/">tmux</a> panes all the time. I’m always editing at least one set of source code in one pane, running tests in another and probable running servers and consoles in yet more.</p>
 
-<p>You can find the source code for the Jekyll new theme at:
-<a href="https://github.com/jglovier"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jglovier</span></a>
- /
-<a href="https://github.com/jglovier/jekyll-new">jekyll-new</a></p>
+<p>This is all great until I plug my laptop into my external monitor, or unplug it. Going from one physical screen to two, or vice versa, usually means I want my sessions, windows and panes arranged differently. e.g. when I have more screen space, I usually want to see my server’s output in a pane on the second monitor, but when I’m just using the laptop, I’ll probably have it in a separate session, out of sight, to save space.</p>
 
-<p>You can find the source code for Jekyll at
-<a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jekyll</span></a>
- /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<p>I always used to stop and restart things to get the layout I wanted, when I plug in/unplug my second screen, but today I learned that I’ve been doing it wrong. With tmux, you can send a pane to another window, or even another session, very easily using the <code class="highlighter-rouge">join-pane</code> command.</p>
+
+<p>Here’s how it works. Let’s say I’ve got a tmux session with two windows, 1 &amp; 2. In window 1, I’ve got two panes, with the word “foo” in the second pane;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   window 1         window 2
++-----+------+  +------------+
+|     | foo  |  |            |
++-----+------+  +------------+
+</code></pre>
+</div>
+
+<p>With the cursor in the “foo” pane, I can send it to the second window like this;</p>
+
+<ol>
+  <li>Hit your tmux prefix key (mine is Ctrl-a, the default is Ctrl-b), then :  This should bring up a tmux control prompt in a bar at the bottom of the screen.</li>
+  <li>Press j and then the tab key to auto-complete the <code class="highlighter-rouge">join-pane</code> command (or you can just type the whole thing)</li>
+  <li>Type <code class="highlighter-rouge">-t :2</code> and hit return.</li>
+</ol>
+
+<p>Your tmux session should now look like this;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>   window 1         window 2
++-----+------+  +------------+
+|            |  |            |
+|            |  +------------+
+|            |  |     foo    |
++-----+------+  +------------+
+</code></pre>
+</div>
+
+<p>The -t flag to join-pane specifies the target window, and :2 tells tmux to send the pane to window 2 of the current session.</p>
+
+<p>You can only send a pane to a window that exists, so if you want a window with only the “foo” pane in it, you need to send the pane and then switch to that window and close the pane you don’t want.</p>
+
+<p>You can also send a pane to a different tmux session altogether. e.g. if you had tmux session 3 open in a different terminal window, and you want to send the pane to session 3, window 1, you would use;</p>
+
+<p><code class="highlighter-rouge">join-pane -t 3:1</code></p>
+
+<p>There is a complementary <code class="highlighter-rouge">-s</code> flag you can give to join-pane to specify the source pane that you want to “pull” to the current tmux window. I haven’t found much use for that because it seems quite tricky to specify the exact remote pane I want. I also find it conceptually easier to think about sending the current pane somewhere else than figuring out which remote panes I want to gather into the current window.</p>
+
+<p>Now I can arrange my tmux panes however I want, without having to restart anything.</p>
 
   </div>
 

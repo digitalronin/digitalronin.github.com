@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Give a man a fish and he’ll eat for a day. Give a fish a man and he’ll eat for weeks.
-">
+  <title>Mysql slaver gem</title>
+  <meta name="description" content="">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://digitalronin.github.io//about/">
+  <link rel="canonical" href="https://digitalronin.github.io//2014/04/16/mysql-slaver-gem-setup-mysql-replication.html">
   <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
 </head>
 
@@ -55,26 +54,77 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">Mysql slaver gem</h1>
+    <p class="post-meta"><time datetime="2014-04-16T00:00:00+01:00" itemprop="datePublished">Apr 16, 2014</time></p>
   </header>
 
-  <div class="post-content">
-    <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="http://jekyllrb.com/">jekyllrb.com</a></p>
+  <div class="post-content" itemprop="articleBody">
+    <center>
+<p>
+<img src="/images/replication.png" />
+</p>
+</center>
 
-<p>You can find the source code for the Jekyll new theme at:
-<a href="https://github.com/jglovier"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jglovier</span></a>
- /
-<a href="https://github.com/jglovier/jekyll-new">jekyll-new</a></p>
+<p>I use MySQL a lot, and I usually set up servers in pairs/groups for scaling and/or resilience. So, when I’m setting up a new server, I almost always have to start replication by doing the same little dance;</p>
 
-<p>You can find the source code for Jekyll at
-<a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jekyll</span></a>
- /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<ol>
+  <li>SSH onto the master and record its master status</li>
+  <li>Dump and load the data from the master onto the new slave</li>
+  <li>Stop replication on the slave</li>
+  <li>Issue a change master command on the slave, using the master status values</li>
+  <li>Start replication</li>
+</ol>
+
+<p>After the fiftieth or sixtieth time, this gets pretty tedious. So, I’ve written a little Ruby gem to simplify it. Under the hood, it does exactly the same steps, but it means I can now do the whole process by entering a single command.</p>
+
+<p>Here’s an example;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ sudo gem install mysql-slaver
+
+$ mysql_slaver enslave --master-host mysqldb1 \
+    --database myapp_production \
+    --replication-user repuser \
+    --replication-password passwordrepl
+
+2014-04-16 13:00:01 CMD: ssh mysqldb1 'mysql -u root  -e "show master status\G"'
+2014-04-16 13:00:02 MASTER STATUS - file: mysql-bin.000001, position: 5656568
+2014-04-16 13:00:02 CMD: mysql -u root  -e "stop slave"
+2014-04-16 13:00:02 CMD: ssh mysqldb1 'mysqldump -h mysqldb1 -u root  --master-data --single-transaction --quick --skip-add-locks --skip-lock-tables --default-character-set=utf8 --compress myapp_production' | mysql -u root  myapp_production
+2014-04-16 13:00:04 CMD: mysql -u root  -e "stop slave; CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=5656568, MASTER_HOST='mysqldb1', MASTER_USER='repuser', MASTER_PASSWORD='passwordrepl'; start slave"
+</code></pre>
+</div>
+
+<p>It’s pretty basic, and I’ve already outlined a bunch of features which I think it would be nice to add, but I’ve already found it very useful, and I hope other people will also.</p>
+
+<p>Here is the <a href="https://github.com/digitalronin/mysql-slaver">repository</a> on GitHub;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>https://github.com/digitalronin/mysql-slaver
+</code></pre>
+</div>
+
+<p>There are some pre-requisites and assumptions, which you can find listed out in the README</p>
+
+<p>18/04/14 ETA</p>
+
+<p>The gem now accepts –port and –sock parameters, if you are running mysql on a non-standard port, or using a socket file.</p>
+
+<p>In both cases, the values must be the same on the slave and the master. i.e. if you’re using /tmp/mysql.sock on localhost, the gem expects that to be the socket file on the master, too, and the same for the port number.</p>
+
+<p>22/04/14 ETA</p>
+
+<p>You can now pass in –ssh_port [integer] if ssh is running on a non-standard port on the master server.</p>
+
+<p>Invoking the enslave command with the –no_copy flag will change the slave’s master status to start replicating from the master server’s current log position, without copying the database.</p>
+
+<p>15/08/15 ETA</p>
+
+<p>Added –dry-run option (which outputs the commands which <em>would be</em> run, without doing anything)</p>
+
+<p>Added –tables option (takes a space-separated list of tables, and only copies those tables from the target server)</p>
+
 
   </div>
 

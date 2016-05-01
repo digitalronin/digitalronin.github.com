@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Give a man a fish and he’ll eat for a day. Give a fish a man and he’ll eat for weeks.
-">
+  <title>Install ruby1.9.2 from source using Puppet</title>
+  <meta name="description" content="I usually use Ubuntu 10.04 as my server platform. Now that I'm switching to ruby 1.9.2 in production, the utter crapness of the built-in Ubuntu packages has ...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://digitalronin.github.io//about/">
+  <link rel="canonical" href="https://digitalronin.github.io//2011/10/06/install-ruby1-9-2-from-source-using-puppet.html">
   <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
 </head>
 
@@ -55,26 +54,87 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">Install ruby1.9.2 from source using Puppet</h1>
+    <p class="post-meta"><time datetime="2011-10-06T00:00:00+01:00" itemprop="datePublished">Oct 6, 2011</time></p>
   </header>
 
-  <div class="post-content">
-    <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="http://jekyllrb.com/">jekyllrb.com</a></p>
+  <div class="post-content" itemprop="articleBody">
+    <p>I usually use Ubuntu 10.04 as my server platform. Now that I'm switching to ruby 1.9.2 in production, the utter crapness of the built-in Ubuntu packages has become unsupportable (ruby 1.9.1 doesn't work with Bundler, for example).</p>
+<p>So, I wanted a way to install ruby 1.9.2 using Puppet. This is what I came up with. The files fit together like this;</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/10/screen-shot-2011-10-06-at-12-05-44.png"><img class="alignnone size-full wp-image-40" title="Screen shot 2011-10-06 at 12.05.44" src="http://roninonrails.files.wordpress.com/2011/10/screen-shot-2011-10-06-at-12-05-44.png" alt="" width="291" height="193" /></a></p>
+<p>In my site.pp file, I've got this;</p>
+<blockquote>
+<pre>import "ruby192"
+include ruby</pre>
+</blockquote>
+<p>The init.pp file just contains this;</p>
+<blockquote>
+<pre>import "*"</pre>
+</blockquote>
+<p>The real fun is in the ruby.pp file;</p>
+<blockquote>
+<pre>class ruby {
 
-<p>You can find the source code for the Jekyll new theme at:
-<a href="https://github.com/jglovier"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jglovier</span></a>
- /
-<a href="https://github.com/jglovier/jekyll-new">jekyll-new</a></p>
+  exec { "apt-update":
+    command =&gt; "/usr/bin/apt-get update"
+  }
 
-<p>You can find the source code for Jekyll at
-<a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewbox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"></path></svg>
-</span><span class="username">jekyll</span></a>
- /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+  # pre-requisites
+  package { [
+      "gcc",
+      "g++",
+      "build-essential",
+      "libssl-dev",
+      "libreadline5-dev",
+      "zlib1g-dev",
+      "linux-headers-generic"
+    ]:
+    ensure =&gt; "installed",
+    require =&gt; Exec["apt-update"]
+  }
+
+  # put the build script in /root
+  file { "/root/build-ruby.sh":
+    ensure =&gt; "present",
+    source =&gt; "puppet:///modules/ruby192/build-ruby.sh",
+    mode =&gt; 755
+  }
+
+  # run the build script
+  exec { "build-ruby192":
+    command =&gt; "/root/build-ruby.sh",
+    cwd =&gt; "/root",
+    timeout =&gt; 0,
+    creates =&gt; "/usr/bin/ruby",
+    require =&gt; File["/root/build-ruby.sh"]
+  }
+
+  # update rubygems
+  exec { "update-rubygems":
+    command =&gt; "/usr/bin/gem update --system",
+    unless  =&gt; "/usr/bin/gem -v |/bin/grep ^1.8",
+    require =&gt; Exec["build-ruby192"]
+  }
+
+}</pre>
+</blockquote>
+<p>As you can see, it updates the apt cache, installs some pre-requisites and then runs a script to build ruby 1.9.2 from source. The "timeout =&gt; 0" line is important. Without it, puppet will not allow long enough for the build script to run completely. Here's the build script;</p>
+<blockquote>
+<pre>
+#!/bin/bash
+
+RUBY_VERSION='ruby-1.9.2-p290'
+
+wget "http://ftp.ruby-lang.org/pub/ruby/1.9/${RUBY_VERSION}.tar.gz"
+tar xzf ${RUBY_VERSION}.tar.gz
+cd ${RUBY_VERSION}
+./configure --prefix=/usr &amp;&amp; make &amp;&amp; make install
+</pre>
+</blockquote>
+<p>That will install ruby 1.9.2 and rubygems, so all that remains for the ruby.pp module is to update rubygems to the latest version.</p>
 
   </div>
 

@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Welcome to Jekyll!</title>
-  <meta name="description" content="You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different wa...">
+  <title>3D-printed vertebrae!</title>
+  <meta name="description" content="WARNING: This post contains very intimate images of parts of my anatomy ;)I was unlucky enough to have an accident in a circus class in June, and fractured m...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="https://digitalronin.github.io//jekyll/update/2016/05/01/welcome-to-jekyll.html">
+  <link rel="canonical" href="https://digitalronin.github.io//2011/09/26/3d-printed-vertebrae.html">
   <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
 </head>
 
@@ -57,25 +57,29 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Welcome to Jekyll!</h1>
-    <p class="post-meta"><time datetime="2016-05-01T12:04:15+01:00" itemprop="datePublished">May 1, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">3D-printed vertebrae!</h1>
+    <p class="post-meta"><time datetime="2011-09-26T00:00:00+01:00" itemprop="datePublished">Sep 26, 2011</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>You’ll find this post in your <code class="highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
-
-<p>To add new posts, simply add a file in the <code class="highlighter-rouge">_posts</code> directory that follows the convention <code class="highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
-
-<p>Jekyll also offers powerful support for code snippets:</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
-
-<p>Check out the <a href="http://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
-
+    <p>WARNING: This post contains very intimate images of parts of my anatomy ;)</p>
+<p>I was unlucky enough to have an accident in a circus class in June, and fractured my spine. There followed a dull 3 months wearing a spine brace, but fortunately there doesn't seem to be any long-term damage.</p>
+<p>Being a geek, I asked the hospital for a digital copy of my CT scans, which they gave me on a DVD. The DVD comes with a basic HTML front-end to view the pictures, like this.</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-26-at-12-15-22.png"><img class="alignnone size-medium wp-image-21" title="Web front-end to scan images" src="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-26-at-12-15-22.png?w=271" alt="" width="271" height="300" /></a></p>
+<p>That's not very informative, without several years of medical training, and there was a whole bunch of other stuff on the disk which, I assumed, were the original source files from the CT scanner. So, I had a look for an open source viewer for that data.</p>
+<p>I found <a href="http://www.osirix-viewer.com/">OsiriX</a> which is a truly amazing program. After a few minutes of fiddling, I was playing with a 3D representation of my spine, rotating it, zooming in and out.</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-24-at-00-00-12.png"><img class="alignnone size-medium wp-image-23" title="3D representation" src="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-24-at-00-00-12.png?w=300" alt="" width="300" height="252" /></a></p>
+<p>(You can see the damage to the lower of the 2 vertebrae shown - it should be the same size and shape as the one above)</p>
+<p>So, that was fun. But then I decided to geek it up a level and see if I could get a 3D print.</p>
+<p>You can export from OsiriX in a number of standard 3D formats. By exporting a .obj file, I could pull that into <a href="http://meshlab.sourceforge.net/">Meshlab</a>, another great open source program, and clean up the 3D model a bit - deleting some "floating" parts and closing a couple of holes. I'm by no means a 3D modelling expert, and it shows, but I managed to tidy things up a little bit. You'll need a fairly powerful machine - the vertex map of my scan had nearly 600,000 vertices, which takes quite a bit of memory and CPU to manipulate.</p>
+<p>Finally, I had a clean enough .obj file to send off to be printed.</p>
+<p>I chose <a href="http://i.materialise.com/">i.materialise</a> Their "3D Print Lab" has a really nice interface and lets you change scale and choose from several printing materials, allowing you to see the costs and properties of each. I chose to print my model at 50% scale in polyamide, which came in at around €35.</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-26-at-12-30-29.png"><img class="alignnone size-medium wp-image-25" title="i.materialise" src="http://roninonrails.files.wordpress.com/2011/09/screen-shot-2011-09-26-at-12-30-29.png?w=300" alt="" width="300" height="191" /></a></p>
+<p>After submitting the job, Dmitriy at i.materialise was really helpful, further cleaning up the model before sending it to print (it turns out my ribs would have fallen off - who knew?)</p>
+<p>So, here's the finished product.</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/09/imag0324.jpg"><img class="alignnone size-medium wp-image-26" title="3D print" src="http://roninonrails.files.wordpress.com/2011/09/imag0324.jpg?w=300" alt="" width="300" height="262" /></a></p>
+<p>It's of no practical use whatsoever, but it was a fun bit of geeking about.</p>
+<p>PS: Don't ever fracture your spine - it's a really bad idea.</p>
 
   </div>
 

@@ -1,5 +1,5 @@
 server:
-	rake preview
+	jekyll serve
 
 deploy:
 	git push

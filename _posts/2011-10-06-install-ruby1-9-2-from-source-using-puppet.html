@@ -1,0 +1,88 @@
+---
+layout: post
+title: Install ruby1.9.2 from source using Puppet
+categories: []
+tags:
+- devops
+- puppet
+- ruby
+- sysadmin
+status: publish
+type: post
+published: true
+meta: {}
+author: 
+---
+<p>I usually use Ubuntu 10.04 as my server platform. Now that I'm switching to ruby 1.9.2 in production, the utter crapness of the built-in Ubuntu packages has become unsupportable (ruby 1.9.1 doesn't work with Bundler, for example).</p>
+<p>So, I wanted a way to install ruby 1.9.2 using Puppet. This is what I came up with. The files fit together like this;</p>
+<p><a href="http://roninonrails.files.wordpress.com/2011/10/screen-shot-2011-10-06-at-12-05-44.png"><img class="alignnone size-full wp-image-40" title="Screen shot 2011-10-06 at 12.05.44" src="http://roninonrails.files.wordpress.com/2011/10/screen-shot-2011-10-06-at-12-05-44.png" alt="" width="291" height="193" /></a></p>
+<p>In my site.pp file, I've got this;</p>
+<blockquote>
+<pre>import "ruby192"
+include ruby</pre>
+</blockquote>
+<p>The init.pp file just contains this;</p>
+<blockquote>
+<pre>import "*"</pre>
+</blockquote>
+<p>The real fun is in the ruby.pp file;</p>
+<blockquote>
+<pre>class ruby {
+
+  exec { "apt-update":
+    command =&gt; "/usr/bin/apt-get update"
+  }
+
+  # pre-requisites
+  package { [
+      "gcc",
+      "g++",
+      "build-essential",
+      "libssl-dev",
+      "libreadline5-dev",
+      "zlib1g-dev",
+      "linux-headers-generic"
+    ]:
+    ensure =&gt; "installed",
+    require =&gt; Exec["apt-update"]
+  }
+
+  # put the build script in /root
+  file { "/root/build-ruby.sh":
+    ensure =&gt; "present",
+    source =&gt; "puppet:///modules/ruby192/build-ruby.sh",
+    mode =&gt; 755
+  }
+
+  # run the build script
+  exec { "build-ruby192":
+    command =&gt; "/root/build-ruby.sh",
+    cwd =&gt; "/root",
+    timeout =&gt; 0,
+    creates =&gt; "/usr/bin/ruby",
+    require =&gt; File["/root/build-ruby.sh"]
+  }
+
+  # update rubygems
+  exec { "update-rubygems":
+    command =&gt; "/usr/bin/gem update --system",
+    unless  =&gt; "/usr/bin/gem -v |/bin/grep ^1.8",
+    require =&gt; Exec["build-ruby192"]
+  }
+
+}</pre>
+</blockquote>
+<p>As you can see, it updates the apt cache, installs some pre-requisites and then runs a script to build ruby 1.9.2 from source. The "timeout =&gt; 0" line is important. Without it, puppet will not allow long enough for the build script to run completely. Here's the build script;</p>
+<blockquote>
+<pre>
+#!/bin/bash
+
+RUBY_VERSION='ruby-1.9.2-p290'
+
+wget "http://ftp.ruby-lang.org/pub/ruby/1.9/${RUBY_VERSION}.tar.gz"
+tar xzf ${RUBY_VERSION}.tar.gz
+cd ${RUBY_VERSION}
+./configure --prefix=/usr &amp;&amp; make &amp;&amp; make install
+</pre>
+</blockquote>
+<p>That will install ruby 1.9.2 and rubygems, so all that remains for the ruby.pp module is to update rubygems to the latest version.</p>

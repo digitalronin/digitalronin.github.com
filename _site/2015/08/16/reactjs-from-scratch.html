@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>React.js from scratch</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://digitalronin.github.io//2015/08/16/reactjs-from-scratch.html">
+  <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Ronin On Rails</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">React.js from scratch</h1>
+    <p class="post-meta"><time datetime="2015-08-16T00:00:00+01:00" itemprop="datePublished">Aug 16, 2015</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <center>
+<p>
+<img src="https://facebook.github.io/react/img/logo.svg" width="150" height="100" />
+</p>
+</center>
+
+<p>I’ve started using React.js on a rails project, and I really like the way it lets me organise front-end code into a individual files, rather than having view code in one file, tightly coupled to javascript code from a completely different file.</p>
+
+<p>That’s all great, but I’m depending on rails and the asset pipeline, along with the react-rails gem, to make everything work, and I didn’t really understand what each piece was doing. So, I decided to try and put together a React.js application from scratch, only adding the tools I really need.</p>
+
+<h2 id="the-goal">The goal</h2>
+
+<p>Create a web application that serves a page containing a React.js component.</p>
+
+<p>That’s it. No ajax calls, no backend data store, no flux architecture. Just create a react component and put it on a web page. But, I want to do this in such a way that I can add more advanced features as and when I choose.</p>
+
+<p>I’m also going to do all this in containers, because Docker, and I’m going to use make to build everything.</p>
+
+<h2 id="step-1-the-web-server">Step 1: The web server</h2>
+
+<p>I’m using Sinatra for this, because it’s a lightweight system that I’m reasonably familiar with. Here are the files I’ll be starting with;</p>
+
+<p>Gemfile:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>source "https://rubygems.org"
+gem "sinatra"
+</code></pre>
+</div>
+
+<p>app.rb</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c1">#!/usr/bin/env ruby</span>
+
+<span class="nb">require</span> <span class="s1">'bundler/setup'</span>
+<span class="nb">require</span> <span class="s1">'sinatra'</span>
+</code></pre>
+</div>
+
+<p>public/index.html</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Hello, world<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>So, we have a Sinatra app which does nothing but serve up a static HTML file. Now let’s create our docker image and run it.</p>
+
+<p>Dockerfile</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>FROM ruby:2.2
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler &amp;&amp; bundle install --jobs 20 --retry 5
+
+# Expose port 4567 to the Docker host, so we can access it
+# from the outside.
+EXPOSE 4567
+
+# The main command to run when the container starts. Also
+# tell sinatra to bind to all interfaces by default.
+CMD ["bundle", "exec", "./app.rb", "-o", "0.0.0.0"]
+</code></pre>
+</div>
+
+<p>That’s pretty straightforward, but we don’t have a Gemfile.lock yet. We’re also going to need a way to build and run the docker image.</p>
+
+<p>Makefile</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>IMG_TAG   := react-img
+CONTAINER := react-cnt
+
+# Run bundler in the docker image to create Gemfile.lock
+bundle:
+  docker run --rm \
+    -v $$(pwd):/app \
+    -w /app \
+    ruby:2.2 gem install bundler &amp;&amp; bundle install --jobs 20 --retry 5
+
+# Build the docker image which runs the app.
+image:
+  docker build -t $(IMG_TAG) .
+
+# Run the docker image, mounting pwd as /app
+run:
+  docker run --rm \
+    --net  host \
+    --name $(CONTAINER) \
+    -e TERM=vt100 \
+    -v $$(pwd):/app \
+    $(IMG_TAG)
+</code></pre>
+</div>
+
+<p>Let’s get it working;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ make bundle
+$ make image
+$ make run
+</code></pre>
+</div>
+
+<p>Now, we can visit the relevant URL and see our Hello, World page. I’m using boot2docker, so I need to access the page via the IP of the boot2docker VM</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://192.168.59.103:4567/index.html
+</code></pre>
+</div>
+
+<p>That IP is the output of;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ boot2docker ip
+</code></pre>
+</div>
+
+<p>The IP might be different on your machine.</p>
+
+<p>If you’re not using boot2docker, then the URL should be;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://127.0.0.1:4567/index.html
+</code></pre>
+</div>
+
+<h2 id="step-2-reactjs">Step 2: React.js</h2>
+
+<p>That seems like a lot of work for a very minor result, but now we’ve got a good foundation on which to build.</p>
+
+<p>Let’s replace the &lt;h1&gt; with a react component;</p>
+
+<p>public/index.html</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://fb.me/react-0.13.3.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/application.js"</span><span class="nt">&gt;</span> <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"react-root"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>The ‘react-root’ div is a placeholder. We’re going to render our react component there when the page loads.</p>
+
+<p>We’re fetching the React.js library from Facebook, and we’ve told our app to include a javascript file;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>public/application.js
+</code></pre>
+</div>
+
+<p>That file doesn’t exist yet, but that’s where all the javascript will be which defines our react component and renders it into the page. In a real application, you will probably want to organise your files differently, but I’m just going to keep things simple, for now.</p>
+
+<p>This is our component;</p>
+
+<p>components/hello_world.jsx</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code> var HelloWorld = React.createClass({
+   render() {
+     return &lt;h1&gt;Hello, React.js world&lt;/h1&gt;;
+   }
+ });
+</code></pre>
+</div>
+
+<p>We need to tell our application to render that component into our page. Let’s create another component to do that</p>
+
+<p>components/application.jsx</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>window.onload = function () {
+  React.render(&lt;HelloWorld /&gt;, document.getElementById('react-root'));
+}
+</code></pre>
+</div>
+
+<h3 id="build-tools">Build tools</h3>
+
+<p>We need to turn our JSX components into valid javascript. At the time of writing, the React.js documentation has lots of references to something called “react-tools” for this, but if you dig a bit further, that’s been deprecated.</p>
+
+<p>The current way to convert jsx into javascript is to use <a href="https://babeljs.io/">babel</a>, so we need to add that to our project. We only need babel to create our application.js file, so we could create a separate docker image containing our build tools, and keep our web application docker image the way it is. But, for this blog post, I’m just going to bundle the build tools with the web application.</p>
+
+<p>To install babel, we need to have npm, and for that we need nodejs. The ruby docker image is based on Debian, so we can use apt to install the packages we need.</p>
+
+<p>Here’s what our Dockerfile looks like now;</p>
+
+<p>Dockerfile:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>FROM ruby:2.2
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler &amp;&amp; bundle install --jobs 20 --retry 5
+
+RUN apt-get update &amp;&amp; apt-get install -y \
+  nodejs \
+  npm
+
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm install -g babel
+
+# Expose port 4567 to the Docker host, so we can access it
+# from the outside.
+EXPOSE 4567
+
+# The main command to run when the container starts. Also
+# tell sinatra to bind to all interfaces by default.
+CMD ["bundle", "exec", "./app.rb", "-o", "0.0.0.0"]
+</code></pre>
+</div>
+
+<p>Note the line which symlinks ‘nodejs’ to ‘node’. Babel expects an executable called ‘node’ in the path, but the debian package calls it ‘nodejs’. The symlink fixes this.</p>
+
+<p>Once we’ve installed babel, we’re going to want to run a shell on our image, so we can poke around. Add the following target to the Makefile;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>shell:
+  docker run --rm \
+    --name $(CONTAINER) \
+    -e TERM=vt100 \
+    -v $$(pwd):/app \
+    -it $(IMG_TAG) /bin/bash
+</code></pre>
+</div>
+
+<h3 id="compiling-applicationjs">Compiling application.js</h3>
+
+<p>Let’s rebuild our image, and see what babel does for us;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ make image
+$ make shell
+
+# cat components/hello_world.jsx | babel
+
+"use strict";
+
+var HelloWorld = React.createClass({
+  displayName: "HelloWorld",
+
+  render: function render() {
+    return React.createElement(
+      "h1",
+      null,
+      "Hello, world"
+    );
+  }
+});
+</code></pre>
+</div>
+
+<p>So, the output from babel is the javascript translation of our JSX component. It’s also translated the ES6 ‘render() { … }’ into ‘render: function() { … }’</p>
+
+<p>Now, we can build our application.js file like this;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># cat components/*.jsx | babel &gt; public/application.js
+</code></pre>
+</div>
+
+<p>But, since we have make, let’s get it to do all the work for us. Add this target to the Makefile;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>compile:
+  docker run --rm \
+    --name $(CONTAINER) \
+    -v $$(pwd):/app \
+    $(IMG_TAG) bash -c 'cat components/*.jsx | babel &gt; public/application.js'
+</code></pre>
+</div>
+
+<p>Now, we can do this;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ make compile
+$ make run
+</code></pre>
+</div>
+
+<p>Visit the URL in your browser, and you should see a greeting from our React.js component.</p>
+
+<p>I’m sure there are a lot of other ways we could have achieved the same result, probably with much less typing, but working through this exercise gave me a much clearer understanding of what the available build tools are doing for me and, more importantly, <strong>why</strong>. I hope you found this interesting and/or or useful, too.</p>
+
+<p>The code for this post is available at;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>https://github.com/digitalronin/react-from-scratch
+</code></pre>
+</div>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Ronin On Rails</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Ronin On Rails</li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/digitalronin"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">digitalronin</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/digitalronin"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">digitalronin</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Give a man a fish and he’ll eat for a day. Give a fish a man and he’ll eat for weeks.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

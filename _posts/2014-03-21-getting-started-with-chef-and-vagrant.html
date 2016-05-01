@@ -1,0 +1,51 @@
+---
+layout: post
+title: Getting started with Chef (and Vagrant)
+categories: []
+tags:
+- chef
+- devops
+- ubuntu
+- vagrant
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+author: 
+---
+<p>I'm a big fan of configuration management, and the whole "infrastructure as code" approach. Currently, I'm managing hundreds of machines with Puppet, but I decided to take a look at Chef...just because.</p>
+<p>I find a lot of the "getting started with Chef" articles and blog posts dive too deep into tool magic before giving a real understanding of the basics. When I learn a new programming language, I start with "Hello, World," and I want the same kind of thing for learning Chef. I just googled "Getting started with Chef," and the first three entries all have "now install knife and use this magic command to go get a bunch of cookbooks that other people have written."</p>
+<p>Maybe it's just me, but I really don't like typing "do this magic thing" and ending up with a ton of configuration files I don't fully understand. That's one of the reasons I don't use IDEs when I develop software. I prefer to start from the bottom and work upwards, only adding a layer when I'm confident I understand the layers I've already built. That's a slower approach, but we're talking about the code that builds crucial pieces of my systems' infrastructures, and there's no way I'm just downloading a long, complex recipe and running it without fully understanding what it's doing to my machine, and why (I have another rant about the complexity of most of the publicly available puppet/chef recipes you find on directories, but I'll save that for another post).</p>
+<p>From that point of view, the very best article I found about starting out with Chef was this one, from Jo Liss;</p>
+<p><a title="Chef Solo tutorial: Managing a single server with Chef" href="http://www.opinionatedprogrammer.com/2011/06/chef-solo-tutorial-managing-a-single-server-with-chef/">Chef Solo tutorial: Managing a single server with Chef<br />
+</a></p>
+<p>I also really like <a href="http://vagrantup.com">Vagrant</a> as a way to iterate puppet/chef recipes quickly, and create throwaway VMs to play around with stuff. So, I've created the simplest possible Chef project I could build, which also has a Vagrantfile and a bootstrap script. This can be used as the basis for any server which you plan to manage using Chef. It also installs ruby2.0 as the system ruby.</p>
+<p>Here's how it works;</p>
+<p>Clone the repo;</p>
+<pre style="padding-left:30px;">git clone https://github.com/digitalronin/chef_project_template.git myproject</pre>
+<p>Make it a new git project of your own;</p>
+<pre style="padding-left:30px;">cd myproject</pre>
+<pre style="padding-left:30px;">rm -rf .git</pre>
+<pre style="padding-left:30px;">git init</pre>
+<p>Edit the Vagrantfile and replace my SSH public key at the top, with one of your own. This public key will be installed in your Vagrant VM so that you have passwordless root access, which enables the script to do everything else without pausing to prompt you for a password.</p>
+<p>Now for the fun part. This assumes you already have Vagrant, and that you already have the Ubuntu 12.04 "box." If you don't, there are instructions in the readme. It also assumes you're running ruby 1.9 or greater. If you're not, you'll need to tweak the Vagrantfile to change "foo: bar" to ":foo =&gt; bar";</p>
+<pre style="padding-left:30px;">./bootstrap_vagrantvm</pre>
+<p>Here's what that does;</p>
+<ol>
+<li>Start an Ubuntu 12.04 vagrant VM (creating it, if it doesn't already exist), with IP number 192.168.11.11</li>
+<li>Install your public key into the root account (/root/.ssh/authorized_keys)</li>
+<li>cd into the local "chef" directory and run deploy.sh, targeting the new VM</li>
+<li>The deploy.sh uploads the contents of the chef directory to the VM, unpacks it (removing any chef directory that was there before), and executes the "install.sh" script.</li>
+<li>install.sh bootraps the box to the point where it has ruby2.0 and chef-solo, and then runs the chef run list defined in server.json</li>
+</ol>
+<p>This should take somewhere around 10 minutes or so, assuming a reasonably fast machine with a good internet connection.</p>
+<p>I've left the run list almost empty. It just installs NTP and sets the server timezone to GMT, for the sake of having Chef do <strong>something</strong>.</p>
+<p>If you don't want to use Vagrant, you can use exactly the same process with any Ubuntu 12.04 server to which you can ssh as root, either by providing a password or by using an ssh key. Just start at step 3.</p>
+<p>Whenever you make changes to your chef recipes, just run from step 3 again. After the first setup is completed, any subsequent runs should be quite quick, depending on your chef changes, so you should be able to iterate very quickly.</p>
+<p>Anytime you want to go back and start from scratch again, just run;</p>
+<pre style="padding-left:30px;">vagrant destroy</pre>
+<pre style="padding-left:30px;">./bootstrap_vagrantvm</pre>
+<p>Being able to use the same code to deploy a local development VM or a live server is very handy (although I would never recommend leaving root access open on your live servers), and it's a big help in getting to the point where you have a <a href="http://blog.codeclimate.com/blog/2014/03/20/kickstart-your-next-project-with-a-walking-skeleton">Walking Skeleton</a> of the system you're building.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

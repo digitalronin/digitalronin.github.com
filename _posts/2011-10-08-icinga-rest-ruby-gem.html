@@ -1,0 +1,42 @@
+---
+layout: post
+title: Icinga REST ruby gem
+categories:
+- Coding
+tags:
+- devops
+- icinga
+- monitoring
+- ruby
+- sysadmin
+status: publish
+type: post
+published: true
+meta: {}
+author: 
+---
+<p>I've just published a <a href="http://rubygems.org/gems/icinga-rest">gem</a> to simplify access to the <a href="https://www.icinga.org/">Icinga</a> <a href="https://www.icinga.org/2010/09/24/making-things-accessible-the-icinga-web-rest-api/">REST API</a>.</p>
+<p>The Icinga REST API can be use to allow nodes in a multi-server system to get information about the overall state of the system from the monitoring server, without requiring them to have detailed information about the other nodes in the system. This can be quite handy.</p>
+<p>For example, let's say one server in a multi-server system wants to take itself out of the active server pool to carry out some long-running, processor intensive task, and then put itself back into service once it has finished. This is fine, unless too many other, similar servers try to do the same thing at the same time. In that case, there might be too few active servers left to handle the realtime load on the system.</p>
+<p>One option is for the server to say "I want to go out of service, but I'll only do that if fewer than N of my siblings are currently out of service." Assuming that our Icinga monitoring server knows about every node (which it should), then we could do something like this;</p>
+<pre>
+    #!/usr/bin/env ruby
+
+    require 'rubygems'
+    require 'icinga_rest'
+
+    check = IcingaRest::ServiceCheck.new(
+      :host    =&gt; 'my.icinga.host',
+      :authkey =&gt; 'mysecretapikey',
+      :filter  =&gt; [
+        {:host_name    =&gt; 'web*'},
+        {:service_name =&gt; 'In Service', :state =&gt; :critical}
+      ]
+    )
+
+    puts check.count
+</pre>
+<p>Then, we can make a decision based on the value of check.count to see if this server is allowed to take a break.</p>
+<p>That's about all that the gem can be used for right now. I might extend it as I think of more ways to use the monitoring server to coordinate the activities of the various servers in a system.</p>
+<p><b>Updated:</b> The code is up on Github, <a href="https://github.com/digitalronin/icinga-rest">here</a>.</p>
+<p><b>Updated:</b> Thanks to a tip from Erik Eide, the gem no longer has to shell out to wget to call the Icinga REST API. The Addressable gem can handle the malformed URLs that the API requires.</p>

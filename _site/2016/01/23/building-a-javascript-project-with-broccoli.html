@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Building a Javascript project with Broccoli</title>
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="https://digitalronin.github.io//2016/01/23/building-a-javascript-project-with-broccoli.html">
+  <link rel="alternate" type="application/rss+xml" title="Ronin On Rails" href="https://digitalronin.github.io//feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Ronin On Rails</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Building a Javascript project with Broccoli</h1>
+    <p class="post-meta"><time datetime="2016-01-23T00:00:00+00:00" itemprop="datePublished">Jan 23, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <center>
+<p>
+<img src="http://broccolijs.com/logo-256-1151e939db4b4d6a2947eafd283998b2.png" width="150px" />
+</p>
+</center>
+
+<p>This blog post is my latest attempt at putting together a JavaScript build pipeline to create an application using ES6 and a unit testing framework.</p>
+
+<p>The idea is to create a single page application which will then consume an API. So, I want the output from my build pipeline to be a single JS file, and a single CSS file.</p>
+
+<p>This all seems a very basic to me, and yet building it up from scratch, one piece at a time, has proven to be a challenge.</p>
+
+<p>This time, I am using  <a href="http://broccolijs.com/">broccoli</a>.</p>
+
+<h3 id="links">Links</h3>
+
+<p>The following links have been very helpful, but please be aware that the examples shown on these pages don’t seem to be entirely up to date.</p>
+
+<p><a href="http://broccolijs.com/">http://broccolijs.com/</a></p>
+
+<p><a href="https://github.com/givanse/broccoli-babel-examples">https://github.com/givanse/broccoli-babel-examples</a></p>
+
+<p><a href="https://github.com/jayphelps/broccoli-babel-boilerplate">https://github.com/jayphelps/broccoli-babel-boilerplate</a></p>
+
+<h3 id="start">Start</h3>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir broccoli-test
+<span class="nb">cd </span>broccoli-test
+npm init</code></pre></figure>
+
+<p>Just hit enter in response to all the prompts.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev broccoli broccoli-cli broccoli-funnel
+touch Brocfile.js
+mkdir src</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">src/index.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, world!"</span><span class="p">)</span></code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">Brocfile.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="s1">'src'</span></code></pre></figure>
+
+<p>That’s enough to enable us to do a very basic test and confirm that our build system is working.</p>
+
+<p>The JavaScript ecosystem has an embarrassment of build tools. We could use the <code class="highlighter-rouge">package.json</code> file as the core of our build system, defining tasks in the <code class="highlighter-rouge">scripts</code> section of the file. But, the longer I spend programming, the more I appreciate the value of learning one tool well instead of many tools badly. So, I’m going to use <code class="highlighter-rouge">make</code> to glue all of these pieces together.</p>
+
+<p>Edit <code class="highlighter-rouge">Makefile</code></p>
+
+<figure class="highlight"><pre><code class="language-make" data-lang="make"><span class="nl">run</span><span class="o">:</span> <span class="nf">dist/index.js</span>
+  <span class="err">@node</span> <span class="err">dist/index.js</span>
+
+<span class="nl">dist/index.js</span><span class="o">:</span> <span class="nf">src/index.js</span>
+  <span class="err">@make</span> <span class="err">clean</span>
+  <span class="err">./node_modules/.bin/broccoli</span> <span class="err">build</span> <span class="err">dist</span>
+
+<span class="nl">clean</span><span class="o">:</span>
+  <span class="err">@rm</span> <span class="err">-rf</span> <span class="err">dist</span> <span class="err">||</span> <span class="err">true</span></code></pre></figure>
+
+<p>(If you want to learn more about make, I highly recommend <a href="https://gist.github.com/isaacs/62a2d1825d04437c6f08">this gist</a>)</p>
+
+<p>Now, we can run a build like this;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make
+./node_modules/.bin/broccoli build dist
+Hello, world!</code></pre></figure>
+
+<p>Nothing too surprising, but it confirms that broccoli is building <code class="highlighter-rouge">dist/index.js</code> from <code class="highlighter-rouge">src/index.js</code></p>
+
+<h3 id="es6">ES6</h3>
+
+<p>Now let’s enable using ES6 javascript syntax. To do that, we’ll have to add a transpiler to convert our ES6 javascript to ES5. I’m going to use babel.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev broccoli-babel-transpiler</code></pre></figure>
+
+<p>Now, let’s convert our <code class="highlighter-rouge">index.js</code> file to use ES6 syntax. Edit <code class="highlighter-rouge">src/index.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, ES6 world!"</span><span class="p">)</span>
+<span class="p">})()</span></code></pre></figure>
+
+<p>Note: <code class="highlighter-rouge">node src/index.js</code> will still work, because node understands ES6 syntax. But, if we tried to use that javascript in a web page, it wouldn’t work in some browsers. You can see details of exactly which browsers support which ES6 features <a href="https://kangax.github.io/compat-table/es6/">here</a></p>
+
+<p>We need to edit the <code class="highlighter-rouge">Brocfile.js</code> to use the transpiler;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-babel-transpiler'</span><span class="p">)</span>
+
+<span class="nx">transpiler</span> <span class="o">=</span> <span class="nx">babel</span><span class="p">(</span><span class="s1">'src'</span><span class="p">)</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">transpiler</span></code></pre></figure>
+
+<p>Now, run the build again;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make
+./node_modules/.bin/broccoli build dist
+Hello, ES6 world!</code></pre></figure>
+
+<p>To prove that the transpiler is working, look at <code class="highlighter-rouge">dist/index.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s2">"use strict"</span><span class="p">;</span>
+
+<span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, ES6 world!"</span><span class="p">);</span>
+<span class="p">})();</span></code></pre></figure>
+
+<h3 id="multiple-files">Multiple files</h3>
+
+<p>Compiling one file isn’t going to get us very far, so let’s extend our build system so that it combines multiple files into <code class="highlighter-rouge">dist/index.js</code></p>
+
+<p>To do that, we need another couple of broccoli plugins;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev broccoli-concat broccoli-merge-trees</code></pre></figure>
+
+<p>Create <code class="highlighter-rouge">src/another.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Another file"</span><span class="p">)</span>
+<span class="p">})()</span></code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">Brocfile.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">babel</span>  <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-babel-transpiler'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">funnel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-funnel'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">concat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-concat'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">appJs</span> <span class="o">=</span> <span class="nx">babel</span><span class="p">(</span><span class="s1">'src'</span><span class="p">)</span>
+
+<span class="c1">// Concatenate all the JS files into a single file</span>
+<span class="nx">appJs</span> <span class="o">=</span> <span class="nx">concat</span><span class="p">(</span><span class="nx">appJs</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">inputFiles</span><span class="p">:</span> <span class="p">[</span><span class="s1">'*.js'</span><span class="p">],</span>
+  <span class="na">outputFile</span><span class="p">:</span> <span class="s1">'index.js'</span>
+<span class="p">})</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">appJs</span></code></pre></figure>
+
+<!--- '* --->
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make
+./node_modules/.bin/broccoli build dist
+Another file
+Hello, ES6 world!</code></pre></figure>
+
+<h3 id="es6-polyfill">ES6 Polyfill</h3>
+
+<p>There are a lot of nice features in ES6 that are supported on the server side, but not yet on the client side, e.g. <a href="https://facebook.github.io/regenerator/">generator functions</a></p>
+
+<p>If we want to use those in our code, we need to add a polyfill to translate the unsupported functions. Babel has such a polyfill, but we need to jump through a few hoops to get it to work.</p>
+
+<p>First, let’s add some code to <code class="highlighter-rouge">src/index.js</code> which uses one of these unsupported features;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span><span class="o">*</span> <span class="nx">counter</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">stop</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">stop</span><span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="nx">i</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, ES6 world!"</span><span class="p">)</span>
+<span class="p">})()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="nx">of</span> <span class="nx">counter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">count</span> <span class="nx">is</span> <span class="nx">$</span><span class="p">{</span><span class="nx">i</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<!--- '* --->
+
+<p>If you try to run make now, you’ll get an error like this; <code class="highlighter-rouge">ReferenceError: regeneratorRuntime is not defined</code></p>
+
+<p>Edit <code class="highlighter-rouge">Brocfile.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">babel</span>      <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-babel-transpiler'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">funnel</span>     <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-funnel'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">concat</span>     <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-concat'</span><span class="p">)</span>
+<span class="kd">var</span> <span class="nx">mergeTrees</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'broccoli-merge-trees'</span><span class="p">)</span>
+
+<span class="kd">var</span> <span class="nx">appJs</span> <span class="o">=</span> <span class="nx">babel</span><span class="p">(</span><span class="s1">'src'</span><span class="p">)</span>
+
+<span class="c1">// // Grab the polyfill file provided by the Babel library</span>
+<span class="kd">var</span> <span class="nx">babelPath</span> <span class="o">=</span> <span class="s1">'node_modules/babel-core'</span>
+
+<span class="kd">var</span> <span class="nx">browserPolyfill</span> <span class="o">=</span> <span class="nx">funnel</span><span class="p">(</span><span class="nx">babelPath</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">files</span><span class="p">:</span> <span class="p">[</span><span class="s1">'browser-polyfill.js'</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="c1">// Add the Babel polyfill to the tree of transpiled files</span>
+<span class="nx">appJs</span> <span class="o">=</span> <span class="nx">mergeTrees</span><span class="p">([</span><span class="nx">browserPolyfill</span><span class="p">,</span> <span class="nx">appJs</span><span class="p">])</span>
+
+<span class="c1">// Concatenate all the JS files into a single file</span>
+<span class="nx">appJs</span> <span class="o">=</span> <span class="nx">concat</span><span class="p">(</span><span class="nx">appJs</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">inputFiles</span><span class="p">:</span> <span class="p">[</span><span class="s1">'browser-polyfill.js'</span><span class="p">,</span> <span class="s1">'*.js'</span><span class="p">],</span>
+  <span class="na">outputFile</span><span class="p">:</span> <span class="s1">'index.js'</span>
+<span class="p">})</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">appJs</span></code></pre></figure>
+
+<!--- '* --->
+
+<p>Now, we can run our example;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make
+./node_modules/.bin/broccoli build dist
+Another file
+Hello, ES6 world!
+count is 1
+count is 2
+count is 3
+count is 4</code></pre></figure>
+
+<p>Note: AFAICT, <a href="https://github.com/babel/broccoli-babel-transpiler/pull/42">this pull request</a> should mean we can just add a second parameter to our babel call, like this; <code class="highlighter-rouge">babel('src', { browserPolyfill: true })</code> instead of the changes above, but it doesn’t seem to work, for me.</p>
+
+<h3 id="use-classes-defined-in-separate-files">Use classes defined in separate files</h3>
+
+<p>We’re going to want to put our classes into separate files, and refer to them in our code. Let’s set that up, now.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir src/classes</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">src/classes/my_class.js</code>;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">MyClass</span> <span class="p">{</span>
+  <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"MyClass says foo!"</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>We’ll call our new class from <code class="highlighter-rouge">src/index.js</code> Add these lines at the bottom of the file;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">mc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">()</span>
+<span class="nx">mc</span><span class="p">.</span><span class="nx">foo</span><span class="p">()</span></code></pre></figure>
+
+<p>Now we need to tell broccoli to include the files in our new <code class="highlighter-rouge">classes</code> directory.</p>
+
+<p>Edit <code class="highlighter-rouge">Brocfile.js</code> and change the <code class="highlighter-rouge">inputFiles</code> line;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">inputFiles</span><span class="err">:</span> <span class="p">[</span><span class="s1">'browser-polyfill.js'</span><span class="p">,</span> <span class="s1">'classes/*.js'</span><span class="p">,</span> <span class="s1">'*.js'</span><span class="p">],</span></code></pre></figure>
+
+<p>Note: We have to put the <code class="highlighter-rouge">classes/*.js</code> section before the section that includes <code class="highlighter-rouge">index.js</code> so that the combined javascript file will define <code class="highlighter-rouge">MyClass</code> before we try to use it.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make
+Another file
+Hello, ES6 world!
+count is 1
+count is 2
+count is 3
+count is 4
+MyClass says foo!</code></pre></figure>
+
+<h3 id="testing">Testing</h3>
+
+<p>The last thing I want to do for now is to add a test framework. I’m going to use <a href="https://mochajs.org/">mocha</a> with the <a href="http://chaijs.com/">chai</a> library;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save-dev chai mocha</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir -p <span class="nb">test</span>/unit/classes</code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">test/init.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="nx">require</span><span class="p">(</span><span class="s1">'babel/register'</span><span class="p">)({</span>
+  <span class="na">stage</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">});</span></code></pre></figure>
+
+<p>Edit <code class="highlighter-rouge">test/mocha.opts</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">test</span><span class="o">/</span><span class="nx">unit</span><span class="cm">/**/</span><span class="o">*</span><span class="nx">_spec</span><span class="p">.</span><span class="nx">js</span></code></pre></figure>
+
+<!--- '** --->
+
+<p>Let’s add a method to <code class="highlighter-rouge">src/classes/my_class.js</code> which returns a value we can test for;</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">MyClass</span> <span class="p">{</span>
+  <span class="nx">foo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"MyClass says foo!"</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="nx">something</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">"whatever"</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Now let’s write a test in <code class="highlighter-rouge">test/unit/classes/my_class_spec.js</code></p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'chai'</span>
+<span class="kr">import</span> <span class="nx">MyClass</span> <span class="nx">from</span> <span class="s1">'../../../src/classes/my_class'</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'MyClass'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="s1">'does something'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">myclass</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">()</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">myclass</span><span class="p">.</span><span class="nx">something</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'whatever'</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span></code></pre></figure>
+
+<p>The test framework isn’t going through broccoli, so we need to tell mocha to transpile any code it sees.</p>
+
+<p>Edit <code class="highlighter-rouge">Makefile</code> and add these lines;</p>
+
+<figure class="highlight"><pre><code class="language-make" data-lang="make"><span class="nl">test</span><span class="o">:</span>
+  <span class="nl">./node_modules/.bin/mocha --compilers js</span><span class="o">:</span><span class="nf">babel-core/register</span>
+
+<span class="nl">.PHONY</span><span class="o">:</span> <span class="nf">test</span></code></pre></figure>
+
+<p>Now, we can run our tests;</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>make <span class="nb">test</span>
+./node_modules/.bin/mocha --compilers js:babel-core/register
+
+
+  MyClass
+    ✓ does something
+
+
+  1 passing <span class="o">(</span>10ms<span class="o">)</span></code></pre></figure>
+
+<p>Note: In the broccoli-babel-boilerplate example I mentioned earlier, the test setup includes <a href="http://jshint.com/">jshint</a>, but I couldn’t get this to work in my project - jshint would simply hang and never complete. So, I’m presenting this example without it. If you manage to get it working, please let me know how in the comments.</p>
+
+<p>I’d like to add CSS using SASS and React.js and use this as the starting point for building a real application, but I’m going to leave this here for now. Depending on how far I get, there may be future posts on this subject.</p>
+
+<p>The code for this post is available <a href="https://github.com/digitalronin/broccoli-test">here</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Ronin On Rails</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>Ronin On Rails</li>
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/digitalronin"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">digitalronin</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/digitalronin"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">digitalronin</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Give a man a fish and he’ll eat for a day. Give a fish a man and he’ll eat for weeks.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
