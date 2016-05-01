@@ -14,27 +14,29 @@ The trick is to make rspec output a single line for each failing spec, and then 
 
 To get the lines we want, we need a custom rspec output formatter. This is a lot easier in RSpec3 than in earlier versions. Here is the full text of my formatter;
 
-    # For a Rails project, put this in;
-    # spec/support/formatters/vim_formatter.rb
+```ruby
+# For a Rails project, put this in;
+# spec/support/formatters/vim_formatter.rb
 
-    class VimFormatter
-      RSpec::Core::Formatters.register self, :example_failed
+class VimFormatter
+  RSpec::Core::Formatters.register self, :example_failed
 
-      def initialize(output)
-        @output = output
-      end
+  def initialize(output)
+    @output = output
+  end
 
-      def example_failed(notification)
-        @output << format(notification) + "\n"
-      end
+  def example_failed(notification)
+    @output << format(notification) + "\n"
+  end
 
-      private
+  private
 
-      def format(notification)
-        rtn = "%s: %s" % [notification.example.location, notification.exception.message]
-        rtn.gsub("\n", ' ')[0,160]
-      end
-    end
+  def format(notification)
+    rtn = "%s: %s" % [notification.example.location, notification.exception.message]
+    rtn.gsub("\n", ' ')[0,160]
+  end
+end
+```
 
 When you run your specs, invoke them like this;
 
