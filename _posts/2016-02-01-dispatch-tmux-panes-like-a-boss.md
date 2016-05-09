@@ -6,7 +6,7 @@ category:
 tags: [tmux]
 ---
 
-I use [tmux](https://tmux.github.io/) panes all the time. I'm always editing at least one set of source code in one pane, running tests in another and probable running servers and consoles in yet more.
+I use [tmux](https://tmux.github.io/) panes all the time. I'm always editing at least one set of source code in one pane, running tests in another and probably running servers and consoles in yet more.
 
 This is all great until I plug my laptop into my external monitor, or unplug it. Going from one physical screen to two, or vice versa, usually means I want my sessions, windows and panes arranged differently. e.g. when I have more screen space, I usually want to see my server's output in a pane on the second monitor, but when I'm just using the laptop, I'll probably have it in a separate session, out of sight, to save space.
 
