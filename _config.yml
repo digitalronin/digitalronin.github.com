@@ -1,40 +1,60 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely need to edit after that.
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'jekyll serve'. If you change this file, please restart the server process.
+# Build settings
+gems:
+  - jemoji
+  - jekyll-paginate
 
 # Site settings
-title: Ronin On Rails
-# email: your-email@domain.com
-description: > # this means to ignore newlines until "baseurl:"
-  Give a man a fish and he’ll eat for a day.
-  Give a fish a man and he’ll eat for weeks.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://digitalronin.github.io/" # the base hostname & protocol for your site
-twitter_username: digitalronin
-github_username:  digitalronin
+title: "Ronin on Rails"
+description: > # this means to ignore newlines until "email:"
+   Give a man a fish and he’ll eat for a day.<br />
+   Give a fish a man and he’ll eat for weeks.
 
-# Build settings
-markdown: kramdown
+email: a-mail@mail.mail
+#blog logo
+logo: "/assets/images/wordificator.png"
+# blog cover
+cover: "/assets/images/background_image.jpg"
 
-comments :
-  provider : disqus
-  disqus :
-    short_name : digitalroningithubcom
-  facebook :
-    appid : 123
-    num_posts: 5
-    width: 580
-    colorscheme: light
+name: 'David Salgado'
+author: 'David Salgado'
+author_image: "/assets/images/author.jpg"
 
-# Settings for analytics helper
-# Set 'provider' to the analytics provider you want to use.
-# Set 'provider' to false to turn analytics off globally.
-#
-analytics :
-  provider : google
-  google :
-      tracking_id : 'UA-36560094-4'
+paginate:	5
 
+url: "https://digitalronin.github.io" # the base hostname & protocol for your site
+baseurl: ""
+#used to display twitter cards
+twitter_handle: '@digitalronin'
+
+#fill in disqus shortname to use disqus
+disqus: digitalroningithub.com
+
+# social icons and sharing options
+social:
+  - icon:	twitter
+    url:	https://twitter.com/digitalronin
+    desc: Follow me on twitter
+    share_url: http://twitter.com/share
+    share_title: ?text=
+    share_link: "&amp;url="
+
+#  - icon:	facebook
+#    url:	https://facebook.com/???
+#    desc: Connect with me facebook
+#    share_url: https://www.facebook.com/sharer.php
+#    share_title: ?t=
+#    share_link: "&amp;u="
+
+  - icon:	github
+    url:	https://github.com/digitalronin
+    desc:	Fork me on github
+    share_url:
+    share_title:
+    share_link:
+
+#  - icon:	google-plus
+#    url:	https://google.com/???
+#    desc:	Add me on google+
+#    share_url:
+#    share_title:
+#    share_link:

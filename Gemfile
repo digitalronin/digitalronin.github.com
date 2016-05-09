@@ -1,4 +1,7 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-gem "jekyll"
+# 'github-pages' includes 'jekyll' gem
+gem 'github-pages'
+gem 'bourbon'
+gem 'jemoji'

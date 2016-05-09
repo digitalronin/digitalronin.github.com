@@ -4,13 +4,8 @@ title: "Keeping secrets with Vim encryption"
 description: ""
 category:
 tags: [vim]
+image: "/images/encryption.jpg"
 ---
-
-<center>
-<p>
-<img src="/images/encryption.jpg" width="300" height="200" />
-</p>
-</center>
 
 The other day, I discovered that vim has an "encryption" mode. In this mode, your file is encrypted whenever it is written to disk, and decrypted whenever it's read back (this also applies to any temporary swap files).
 
