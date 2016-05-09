@@ -13,7 +13,8 @@ email: a-mail@mail.mail
 #blog logo
 logo: "/assets/images/wordificator.png"
 # blog cover
-cover: "/assets/images/background_image.jpg"
+cover: "/assets/images/london-st-james.jpg"
+# cover: "/assets/images/niseko_snow_trees.jpg"
 
 name: 'David Salgado'
 author: 'David Salgado'
