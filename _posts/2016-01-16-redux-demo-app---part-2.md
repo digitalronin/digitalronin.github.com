@@ -4,6 +4,7 @@ title: "Redux Demo. App.   part 2"
 description: ""
 category:
 tags: [react,redux]
+image: "http://www.pcgamesn.com/sites/default/files/Metro-Redux-Collection-Is-Real-Full-Reveal-Coming-at-E3-2014.jpg"
 ---
 
 In [part 1](https://digitalronin.github.io/2016/01/16/redux-demo-app/) we created a build system that lets us write an application using React.js components. Now let's extend that.

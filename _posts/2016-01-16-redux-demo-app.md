@@ -4,6 +4,7 @@ title: "Redux Demo. App. - part 1"
 description: ""
 category:
 tags: [react,redux]
+image: "http://www.pcgamesn.com/sites/default/files/Metro-Redux-Collection-Is-Real-Full-Reveal-Coming-at-E3-2014.jpg"
 ---
 
 <center>

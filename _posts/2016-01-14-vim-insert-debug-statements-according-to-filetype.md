@@ -4,13 +4,8 @@ title: "Vim: Insert debug statements according to filetype"
 description: ""
 category:
 tags: [vim]
+image: "http://www.ibmsystemsmag.com/getattachment/c247b44e-07b3-4ca9-9724-d913fb9dc3c2/"
 ---
-
-<center>
-<p>
-<img src="http://www.ibmsystemsmag.com/getattachment/c247b44e-07b3-4ca9-9724-d913fb9dc3c2/" width="50%" />
-</p>
-</center>
 
 I've got a little keybinding in my `.vimrc` file which inserts a debug statement into a file, and then saves it;
 

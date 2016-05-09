@@ -4,6 +4,7 @@ title: "Dispatch Tmux panes like a boss"
 description: ""
 category:
 tags: [tmux]
+image: "https://sanctum.geek.nz/arabesque/wp-content/uploads/2013/03/toggle-pane-zoom.gif"
 ---
 
 I use [tmux](https://tmux.github.io/) panes all the time. I'm always editing at least one set of source code in one pane, running tests in another and probably running servers and consoles in yet more.

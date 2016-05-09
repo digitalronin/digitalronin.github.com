@@ -4,13 +4,8 @@ title: "Building a Javascript project with Broccoli"
 description: ""
 category:
 tags: [javascript]
+image: "http://cbsnews2.cbsistatic.com/hub/i/r/2014/08/29/65967e85-657a-4cbf-a020-f79b8e222fbf/thumbnail/620x350/f037c9bcee7cd5795d8e16cb1b161894/istock000009196614small.jpg"
 ---
-
-<center>
-<p>
-<img src="http://broccolijs.com/logo-256-1151e939db4b4d6a2947eafd283998b2.png" width="150px" />
-</p>
-</center>
 
 This blog post is my latest attempt at putting together a JavaScript build pipeline to create an application using ES6 and a unit testing framework.
 
