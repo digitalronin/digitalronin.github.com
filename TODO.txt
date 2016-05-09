@@ -1,0 +1,2 @@
+* flesh out the about page and/or create a CV page
+* move all images to assets/article_images/
