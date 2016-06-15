@@ -1,0 +1,66 @@
+---
+layout: default
+---
+
+<header class="blog-header">
+<h1>David Salgado</h1>
+</header>
+
+<main class="content container" role="main">
+<caption>
+  Email:
+  <a href="mailto:david@digitalronin.com">david@digitalronin.com</a><br />
+  github: <a href="https://github.com/digitalronin">https://github.com/digitalronin</a><br />
+  Blog: <a href="https://digitalronin.github.io/">https://digitalronin.github.io/</a>
+</caption>
+
+
+<h2>Profile</h2>
+<p>I am a developer, technical architect and devops engineer. I have extensive and wide-ranging experience building and maintaining performant, reliable and highly-scalable systems using a large variety of technologies. I have built, led and managed teams of developers and worked in two successful startups, including one of my own.</p>
+
+<h2>Experience</h2>
+
+<h3>2006 – 2016 CTO &amp; Co-Founder of Admoda</h3>
+<p>We created Admoda in 2006, and were the second mobile ad network to launch (we thought we were the first, but Admob beat us by a week). Admoda was a self-serve system which enabled owners of applications and websites to earn money from their mobile traffic by showing ads. Advertisers registered pre-pay accounts on the system, and then created and managed ad campaigns using our online tools to upload and manage their creative assets, and control the targeting of their campaigns (country, mobile network, device manufacturer, operating system, etc.)</p>
+<p>We were up and running within three months of the initial decision to launch, and were profitable within another three. We continued to be profitable for the next ten years. Initially, I worked on the system in my spare time, gradually transitioning to working on it full-time by early 2009.</p>
+<p>The front-end was a Ruby on Rails application that went through various incarnations, including a major rewrite to incorporate React.js with a complete re-skin to use Material Design.</p>
+<p>The back end initially consisted of servers running an open source PHP ad-serving script, which I had modified to add mobile device detection and targeting capabilities. By the time we wound up the business, the back end was a cloud-hosted auto-scaling “farm” of stateless adservers, each of which comprised a number of loosely-coupled micro-services (geo-location, device recognition, ad selection, etc.), with each service running in its own Docker container. The primary core of the system was written in Elixir, with RabbitMQ as the messaging backbone, with everything orchestrated via a Consul service discovery cluster.</p>
+<p>At busy times, there would be hundreds of adservers, scaling down to just a handful at quiet periods. The system was highly resilient, with no single points of failure, and was very closely monitored by several different services. This enabled us to keep hosting and system administration costs to a minimum, yet still handle billions of transactions per day, and millions of pounds of turnover, with a team of just three people (that's the whole company, not just the technical team).</p>
+
+<h3>2005 – 2009 Technical Architect at Mobile Interactive Group</h3>
+<p>I was the fourth person, and the first developer, to join this startup. I helped build and lead the development team, designing, creating and managing a wide variety of applications around different mobile customer experiences (such as voting, ticketing, mobile payments and customer rewards systems), handling traffic loads up to several million transactions per hour.</p>
+<p>We worked in Perl initially, but quickly transitioned to Ruby in 2006, using Rails for our front-end applications.</p>
+<p>Amongst other projects, I worked on the voting application used for TV shows such as The X Factor, the SMS ticket lottery for the Live8 charity concert, and a loyalty rewards programme for customers of the Orange mobile phone network.</p>
+
+<h3>2001 – 2005 Developer at O2 UK</h3>
+<p>Working mostly in Perl but also using some Python, I created and maintained a wide variety of applications for O2 as part of their in-house development team. In particular, I designed and built the first SMS voting system for interactive TV shows including “I'm a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.</p>
+
+<h2>Teaching &amp; Presenting</h2>
+<p>I've been a regular attendee at the London Ruby User Group since 2006, and an occasional presenter. My most recent presentation was on Elixir, in March 2016;</p>
+<p>
+  <a href="https://digitalronin.github.io/2016/03/25/elixir-presentation-lrug.html">https://digitalronin.github.io/2016/03/25/elixir-presentation-lrug.html</a>
+</p>
+<p>I mentor developers learning Ruby on Rails for “Women Who Code” events in London;</p>
+<p>
+  <a href="http://www.meetup.com/Women-Who-Code-London/">http://www.meetup.com/Women-Who-Code-London/</a>
+</p>
+
+<h2>Qualifications</h2>
+<p>Upper Second B.Sc. in Computer Science &amp; Electronic Engineering from University College, London.</p>
+
+<h2>Hobbies</h2>
+
+<h3>Aerial Circus skills</h3>
+<p>I started learning aerial circus skills about five years ago, and got instantly hooked. My first aerial discipline was Static Trapeze, and I later moved on to Rope and Chinese Pole.</p>
+
+<h3>Others</h3>
+<ul>
+  <li>Kitesurfing</li>
+  <li>Snowboarding</li>
+  <li>Kayaking</li>
+  <li>Scuba-diving</li>
+  <li>Languages (I speak passable Japanese, French and Spanish, and I'm learning German, Italian and Russian).</li>
+</ul>
+
+<p>References available upon request.</p>
+</main>
