@@ -1,20 +1,24 @@
-.article-image{
-page-break-after:never
+body {
+  font-family: Open Sans, MundoSans, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
-.post-content, 
+
+.article-image{
+  page-break-after:never
+}
+.post-content,
 .bottom-teaser.cf{
   padding-top:0!important
 }
 .bottom-teaser.cf{
   margin:0
 }
-.post-reading, 
-.bottom-teaser.cf .isRight, 
-.cf.post-meta-text, 
-.post-meta center, 
+.post-reading,
+.bottom-teaser.cf .isRight,
+.cf.post-meta-text,
+.post-meta center,
 .post-image-image,
 .bottom-closer,
-.share, 
+.share,
 .home-template .post-meta .post-tags-set,
 .pagination,
 .author-image,
