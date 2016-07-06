@@ -1,5 +1,3 @@
-{% if site.safe and site.analytics.provider and page.analytics != false %}
-
 {% case site.analytics.provider %}
 {% when "google" %}
   {% include analytics-providers/google.html %}
@@ -12,5 +10,3 @@
 {% when "custom" %}
   {% include custom/analytics.html %}
 {% endcase %}
-
-{% endif %}

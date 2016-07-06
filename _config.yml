@@ -30,6 +30,9 @@ twitter_handle: '@digitalronin'
 #fill in disqus shortname to use disqus
 disqus: digitalroningithub.com
 
+analytics:
+  provider: "google"
+
 # social icons and sharing options
 social:
   - icon:	twitter
