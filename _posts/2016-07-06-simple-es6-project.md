@@ -4,6 +4,7 @@ title: "A Simple ES6 (ES2015) Javascript Project"
 description: "Creating a simple project using ES2015 Javascript, with gulp"
 category:
 tags: [javascript]
+image: "/images/deskstuff.jpg"
 ---
 
 In this post, I'm going to walk through creating a very simple Javascript project. The project itself is not going to do anything much, but the point (as always, with javascript) is to figure out how to get the build and test pipelines set up correctly. I'm going to try to use a minimum of components, and in the end I want the following;
