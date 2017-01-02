@@ -58,6 +58,8 @@ Estimates can be changed at any time, until consensus is reached.
 
 I wrote this during the xmas break, so I haven't shown it to my team yet. I'm hoping they'll find it useful, and that you will, too. If you do, or if you have any feedback, I'd love to hear from you in the comments or on github, where you'll find the [source][source].
 
+The app is [here][ticket-poker]
+
 Happy New Year!
 
 
