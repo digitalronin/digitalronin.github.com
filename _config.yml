@@ -28,7 +28,7 @@ baseurl: ""
 twitter_handle: '@digitalronin'
 
 #fill in disqus shortname to use disqus
-disqus: digitalroningithub
+disqus: digitalroningithubcom
 
 analytics:
   provider: "google"
