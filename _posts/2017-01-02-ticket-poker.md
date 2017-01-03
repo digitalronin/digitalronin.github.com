@@ -64,5 +64,5 @@ Happy New Year!
 
 
 [uuid]: https://en.wikipedia.org/wiki/UUID
-[ticket-poker]: https://www.ticket-poker.org
+[ticket-poker]: https://ticket-poker.herokuapp.com/
 [source]: https://github.com/digitalronin/ticket-poker
