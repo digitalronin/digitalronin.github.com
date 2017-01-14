@@ -3,7 +3,7 @@ layout: post
 title: "Ticket Poker API"
 description: ""
 category:
-tags: [elixir,phoenix,react,javascript]
+tags: [elixir,phoenix,react,javascript,ticket-poker]
 image: "/images/poker.jpg"
 ---
 Someone asked me about integrating [Ticket Poker][ticket-poker] with Jira.

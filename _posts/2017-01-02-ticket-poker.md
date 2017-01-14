@@ -3,7 +3,7 @@ layout: post
 title: "Ticket Poker"
 description: ""
 category:
-tags: [elixir,phoenix,react,javascript]
+tags: [elixir,phoenix,react,javascript,ticket-poker]
 image: "/images/poker.jpg"
 ---
 I wrote a little web application to help teams estimate tickets (aka stories) during sprint planning.

@@ -3,7 +3,7 @@ layout: post
 title: "Scripting Pivotal Tracker"
 description: ""
 category:
-tags: []
+tags: [ticket-poker,pivotal-tracker,ruby]
 image: "https://www.pivotaltracker.com/marketing_assets/tracker-eba4f51a43e4837e9b9a68544c18190d925b64e103220e565c47378ae3536c53.svg"
 ---
 We've been using [Ticket Poker][ticket-poker] for a while, in my current team, and we're pretty happy with it.
