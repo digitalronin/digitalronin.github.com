@@ -6,6 +6,7 @@ category:
 tags: [tfl-api,bus-arrivals]
 image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/London_Buses_-_Route_253.jpg/320px-London_Buses_-_Route_253.jpg"
 ---
+TL;DR If you use London buses, check [this][bus-arrivals] out.
 
 Back in the dim and distant past (2011), [Transport for London][tfl] launched their Countdown API, which enabled finding out when the next buses would arrive at any given bus stop.
 
