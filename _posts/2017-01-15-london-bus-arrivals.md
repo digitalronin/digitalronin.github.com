@@ -34,8 +34,8 @@ The result is [Bus Arrivals][bus-arrivals]
 I haven't got all the original features working yet, but I intend to. It can already take the SMS code published on every London bus stop, and
 list the next buses and their waiting times.
 
-Here is the [equivalent page][bus-arrivals-trafalgar-square] to the TFL one I showed earlier. Currently, it makes 4 network requests, and transfers
-94KB of data to provide the relevant information.
+Here is the [equivalent page][bus-arrivals-trafalgar-square] to the TFL one I showed earlier. Currently, it makes 5 network requests, and transfers
+11KB of data to provide the relevant information.
 
 ![Bus Arrivals page](/images/bus-arrivals-page.png)
 
