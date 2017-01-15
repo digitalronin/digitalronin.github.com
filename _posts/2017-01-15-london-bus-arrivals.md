@@ -31,20 +31,16 @@ I really miss bus.abscond.org, so I decided to fork James' [TFL Live Bus][tfl-li
 
 The result is [Bus Arrivals][bus-arrivals]
 
-I haven't got all the original features working yet, but I intend to. It can already take the SMS code published on every London bus stop, and
-list the next buses and their waiting times.
-
 Here is the [equivalent page][bus-arrivals-trafalgar-square] to the TFL one I showed earlier. Currently, it makes 5 network requests, and transfers
 11KB of data to provide the relevant information.
 
 ![Bus Arrivals page](/images/bus-arrivals-page.png)
 
-As you might imagine, it loads faster, too - especially on a mobile device (which
-is the only kind that really matters, for this sort of service).
+As you might imagine, it loads faster, too - especially on a mobile device (which is the most important kind, for this sort of service).
 
 Best of all, you get a bookmarkable URL for every stop. I tend to use the same few stops every week,
-going to and from work, so that was an essential feature which I really miss when trying to use the TFL service.
-You can get a bookmarkable page out of it, but they certainly don't make it easy.
+going to and from work, so that was an essential feature of bus.abscond.org which I really miss when trying to use the TFL service -
+you can get bookmarkable pages out of it, but they certainly don't make it easy.
 
 I hope people find this useful, at least until [TFL] make me shut it down.
 
