@@ -7,6 +7,9 @@ tags: [javascript]
 image: "/images/deskstuff.jpg"
 ---
 
+### UPDATED 2017/02/04: There is now a [webpack version][webpack-post] of this post.
+
+
 In this post, I'm going to walk through creating a very simple Javascript project. The project itself is not going to do anything much, but the point (as always, with javascript) is to figure out how to get the build and test pipelines set up correctly. I'm going to try to use a minimum of components, and in the end I want the following;
 
 * A static javascript application, deliverable as three files;
@@ -350,3 +353,5 @@ Because gulp is already configured to use babel to transpile ES2015 files, there
 There's a lot more we could do with these tools, such as setting up gulp to watch for changes and run our tests, but the point of this post was to show you how to put the pieces together. I hope you found it useful.
 
 The final source code for this post is available [here](https://github.com/digitalronin/hello-es2015)
+
+[webpack-post]: https://digitalronin.github.io/2017/02/04/simple-es6-project.html
