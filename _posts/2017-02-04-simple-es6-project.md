@@ -4,7 +4,7 @@ title: "A Simple ES6 (ES2015) Javascript Project (webpack edition) - Part 1"
 description: "Creating a simple project using ES2015 Javascript, with webpack"
 category:
 tags: [javascript]
-image: "/images/webpack-logo.jpg"
+image: "/images/webpack-logo.png"
 ---
 
 This is a version of [another post][gulp-post] I wrote in 2016, but using [webpack][webpack] instead of [gulp][gulp]
