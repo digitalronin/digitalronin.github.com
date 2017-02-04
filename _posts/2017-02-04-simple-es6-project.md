@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Simple ES6 (ES2015) Javascript Project (webpack edition) - Part 1"
+title: "A Simple ES6 (ES2015) Javascript Project (webpack edition)"
 description: "Creating a simple project using ES2015 Javascript, with webpack"
 category:
 tags: [javascript]
@@ -144,6 +144,8 @@ application.js  2.54 kB       0  [emitted]  main
 
 If you look in the `dist` folder, you should have an `application.js` file.
 
+# Creating the index.html file
+
 We need webpack to create the `index.html` in our dist folder. To do that, we need to install a webpack plugin;
 
 ~~~bash
@@ -167,6 +169,8 @@ module.exports = {
 ~~~
 
 Now, after you run webpack your `dist` folder should contain both an `application.js` file and an `index.html` file. If you open up the `index.html` file in a browser, you should see the web page, and some output on the javascript console.
+
+# Adding CSS styles
 
 The page doesn't have our styling, though. To fix that, we need to add a couple of webpack loaders so that webpack knows how to take our CSS file and bundle the styling into the `dist/application.js` file.
 
@@ -209,10 +213,132 @@ console.log("Hello from app.js")
 
 Now, when you run webpack, you should still have just the two files in `dist`, but webpack will have embedded the styles from `src/stylesheet.css` in the `application.js` file. Load up `dist/index.html` and it should have white text on a black background.
 
+# ES2015
+
+Webpack handles ES2015 javascript, but it won't transpile it to ES5 until we tell it to do that. We can prove that by using some ES2015 features in our javascript.
+
+First, add a `src/hello.js` file;
+
+~~~javascript
+class Hello {
+  constructor(config) {
+    this.target = config.target;
+  }
+
+  run() {
+    this.target.innerHTML = `
+      <p>
+        Hello from ES2015
+      </p>
+    `;
+  }
+}
+
+export default Hello
+~~~
+
+Edit `src/app.js`;
+
+~~~javascript
+import css from './stylesheet.css'
+import Hello from './hello'
+
+(new Hello({
+  target: document.getElementsByTagName('main')[0]
+})).run()
+~~~
+
+After running webpack, when we load `dist/index.html`, we should see "Hello from ES2015" So, we know our javascript is working.
+
+If you open up `dist/application.js` and look for 'Hello', you should see something like this;
+
+~~~javascript
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Hello {
+  constructor(config) {
+    this.target = config.target;
+  }
+
+  run() {
+    this.target.innerHTML = `
+      <p>
+        Hello from ES2015
+      </p>
+    `;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = Hello;
+~~~
+
+That's ES2015 javascript. We want webpack to create ES5 javascript, so it will run in older browsers. To do that, we need to use [babel][babel] with the es2015 preset;
+
+~~~bash
+npm install babel-core --save-dev
+npm install babel-loader --save-dev
+npm install babel-preset-es2015 --save-dev
+~~~
+
+We need to add a stanza to our webpack.config.js so that all .js files get transpiled;
+
+~~~javascript
+var path = require('path')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  entry: './src/app.js',
+  output: {
+    filename: 'application.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015']
+        }
+      }
+    ]
+  },
+  plugins: [new HtmlWebpackPlugin({ template: 'src/index.html' })]
+}
+~~~
+
+Now, after running webpack and loading `dist/index.html` in the browser, our application should still work as before. But, if you open up `dist/application.js` and search for 'Hello', you should see this;
+
+~~~javascript
+var Hello = function () {
+  function Hello(config) {
+    _classCallCheck(this, Hello);
+
+    this.target = config.target;
+  }
+
+  _createClass(Hello, [{
+    key: "run",
+    value: function run() {
+      this.target.innerHTML = "\n      <p>\n        Hello from ES2015\n      </p>\n    ";
+    }
+  }]);
+
+  return Hello;
+}();
+
+exports.default = Hello;
+~~~
+
 The source code for this blog post is available [here][source]
 
 [webpack]: https://webpack.js.org
 [gulp-post]: https://digitalronin.github.io/2016/07/06/simple-es6-project.html
 [gulp]: http://gulpjs.com/
 [source]: https://github.com/digitalronin/hello-es2015-webpack
-
+[babel]: https://babeljs.io
