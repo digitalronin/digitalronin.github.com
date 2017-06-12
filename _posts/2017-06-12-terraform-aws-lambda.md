@@ -400,6 +400,8 @@ This was just a learning exercise for me. If I were planning to build a
 production system on AWS Lambda, I'd probably look at things like the
 [Serverless Framework][serverless-framework].
 
+You can find all the code for this article on [Github][git-repo].
+
 If you have any suggestions or corrections (or any other feedback), please let
 me know in the comments.
 
