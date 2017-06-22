@@ -2,6 +2,7 @@
 gems:
   - jemoji
   - jekyll-paginate
+  - jekyll-gist
 
 # Site settings
 title: "Ronin on Rails"
