@@ -109,9 +109,9 @@ replace it with a new rule for `scss` files. So, remove this stanza;
 {
   test: /\.scss$/,
   use: [
-    { loader: 'style-loader' },
-    { loader: 'css-loader' },
-    { loader: 'sass-loader' }
+    'style-loader',
+    'css-loader',
+    'sass-loader'
   ]
 },
 ~~~
