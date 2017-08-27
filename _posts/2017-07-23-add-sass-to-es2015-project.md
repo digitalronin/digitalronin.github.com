@@ -53,7 +53,7 @@ Now, let's switch to Sass.
 To do this, we're going to need some more plugins for webpack.
 
 ~~~bash
-$ npm install --save-dev node-loader sass-loader
+$ npm install --save-dev node-loader sass-loader node-sass
 ~~~
 
 Rename `src/stylesheet.css` to `src/stylesheet.scss` and change the section we added to
