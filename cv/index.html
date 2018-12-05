@@ -25,7 +25,7 @@ layout: default
   of my own.
 </p>
 
-<h2><a href="#" class="collapse">Skills</a></h2>
+<h2><a id="skills" href="#" class="collapse">Skills</a></h2>
 <div class="collapsed">
   <h3>Programming Languages</h3>
   <ul>
@@ -229,7 +229,7 @@ layout: default
   </ul>
 </div>
 
-<h2><a href="#" class="collapse">Experience</a></h2>
+<h2><a id="experience" href="#" class="collapse">Experience</a></h2>
 
 <div class="collapsed">
   <h3>2016 – present Technical Architect at the Ministry of Justice</h3>
@@ -344,7 +344,7 @@ a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.
   </p>
 </div>
 
-<h2><a href="#" class="collapse">Open Source</a></h2>
+<h2><a id="open_source" href="#" class="collapse">Open Source</a></h2>
 <div class="collapsed">
   My open source projects include the following. <br />
   All my open-source repositories can be seen
@@ -371,7 +371,7 @@ a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.
   </ul>
 </div>
 
-<h2><a href="#" class="collapse">Side Projects</a></h2>
+<h2><a id="side_projects" href="#" class="collapse">Side Projects</a></h2>
 <div class="collapsed">
   My side projects include the following;
   <ul>
@@ -410,7 +410,7 @@ a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.
   </ul>
 </div>
 
-<h2><a href="#" class="collapse">Teaching &amp; Presenting</a></h2>
+<h2><a id="teaching_and_presenting" href="#" class="collapse">Teaching &amp; Presenting</a></h2>
 <div class="collapsed">
   <p>
     I&lsquo;ve been a regular attendee at the London Ruby User Group
@@ -435,12 +435,12 @@ a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.
   </p>
 </div>
 
-<h2><a href="#" class="collapse">Qualifications</a></h2>
+<h2><a id="qualifications" href="#" class="collapse">Qualifications</a></h2>
 <div class="collapsed">
   <p>Upper Second B.Sc. in Computer Science &amp; Electronic Engineering from University College, London.</p>
 </div>
 
-<h2><a href="#" class="collapse">Hobbies</a></h2>
+<h2><a id="hobbies" href="#" class="collapse">Hobbies</a></h2>
 
 <div class="collapsed">
   <h3>Aerial Circus skills</h3>
@@ -469,7 +469,11 @@ a Celebrity, Get Me Out Of Here”, Big Brother and Pop Idol.
   "use strict";
   $(document).ready(function(){
     $('a.collapse').on('click', function(e) {
-      $(e.target).parent().next('div').toggleClass('collapsed');
+      var $div = $(e.target).parent().next('div');
+      if ($div.hasClass('collapsed')) {
+        setTimeout(function() { window.location = "#" + e.target.id; }, 50);
+      }
+      $div.toggleClass('collapsed');
     })
   });
 }(jQuery));
