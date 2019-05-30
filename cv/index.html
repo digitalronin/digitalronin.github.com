@@ -10,7 +10,7 @@ layout: default
   <caption>
     Email: <a href="mailto:david@digitalronin.com">david@digitalronin.com</a><br />
     github: <a href="https://github.com/digitalronin">https://github.com/digitalronin</a><br />
-    Blog: <a href="https://digitalronin.github.io/">https://digitalronin.github.io/</a><br />
+    Blog: <a href="https://blog.digitalronin.com">https://blog.digitalronin.com</a><br />
     LinkedIn: <a href="https://www.linkedin.com/in/david-salgado-94130b/">https://www.linkedin.com/in/david-salgado-94130b</a>
   </caption>
 
@@ -23,12 +23,12 @@ layout: default
   </p>
 
   <p>
-    Most recently, I was the Head of Operations
-    of <a href="https://mattereum.com">Mattereum</a>, a legaltech
-    startup in the blockchain space. Prior to that, I worked as a
-    senior technical architect at the UK <a href="https://www.gov.uk/government/organisations/ministry-of-justice">Ministry of Justice</a>,
-    implementing systems to enable citizen access to
-    justice.
+    Currently, I am a senior technical architect at the UK <a href="https://www.gov.uk/government/organisations/ministry-of-justice">Ministry of Justice</a>,
+    where I have been since 2016 (with a gap of one year during which I was the Head of Operations of <a href="https://mattereum.com">Mattereum</a>, a legaltech
+    startup in the blockchain space.
+
+    At the MoJ, I am currently working on our Cloud Platform - a Kubernetes-based hosting platform for our digital services. I have also worked on several public
+    services aimed at facilitating citizen access to the UK justice system.
   </p>
 
   <p>
@@ -192,6 +192,32 @@ layout: default
 
     <ul>
       <li>
+        <h4>Kubernetes</h4>
+        <p>
+          I am currently working as the Technical Architect on the MoJ Cloud Platform team.
+          The Cloud Platform is a hosting platform for the MoJ's digital services, consisting
+          of a kubernetes cluster plus ancillary products and services including Elastic Search
+          Prometheus, Kibana, Grafana, Fluentd, Concourse, CircleCI, Auth0 and probably a few
+          more things I've forgotten.
+        </p>
+      </li>
+      <li>
+        <h4>Terraform</h4>
+        <p>
+          The MoJ Cloud Platform makes extensive use of Terraform,
+          with the entire platform being defined across several
+          open-source github repositories.
+        </p>
+      </li>
+      <li>
+        <h4>Docker</h4>
+        <p>
+          I&lsquo;ve been using Docker since the end of 2014, when I
+          used it as a key part of the <a href="https://signalvnoise.com/posts/2634-bootstrapped-profitable-proud-admoda">Admoda</a>
+          adserver infrastructure.
+        </p>
+      </li>
+      <li>
         <h4>Unix System Administration</h4>
         <p>
           I have been using Linux (mostly Ubuntu) in one form or
@@ -222,27 +248,6 @@ layout: default
           used it in production.
         </p>
       </li>
-      <li>
-        <h4>Terraform</h4>
-        <p>
-          I have played with Terraform several times over the years.
-          I am a huge believer in maintaining infrastructure as
-          code, and Terraform has a lot to offer. I wrote some
-          Terraform code for a project at the MoJ, but haven't used
-          it extensively.
-        </p>
-      </li>
-      <li>
-        <h4>Docker</h4>
-        <p>
-          I&lsquo;ve been using Docker since the end of 2014, when I
-          converted <a href="https://signalvnoise.com/posts/2634-bootstrapped-profitable-proud-admoda">Admoda</a> adservers from Ubuntu VMs running several
-          different software services to a collection of Docker
-          containers, each exposing a single service. I think it can
-          offer a lot, when used appropriately, although there are
-          still some gotchas to avoid.
-        </p>
-      </li>
     </ul>
 
     <h3>Cloud Platforms</h3>
@@ -269,7 +274,7 @@ layout: default
         <h4>Google BigQuery</h4>
         <p>
           <a href="https://signalvnoise.com/posts/2634-bootstrapped-profitable-proud-admoda">Admoda</a> generated around 1TB of transaction data every day.
-          We used Google BigQuery to analyse this data and expose
+          While I was running Admoda, we used Google BigQuery to analyse this data and expose
           summary information for our customers in a best-in-class
           analytics tool, to help advertisers target their campaigns,
           and publishers to get the best value from their mobile
@@ -290,7 +295,7 @@ layout: default
       <li>
         <h4>Rackspace</h4>
         <p>
-          We used Rackspace as our primary hosting provider until May 2015.
+          When I was running Admoda, we used Rackspace as our primary hosting provider until May 2015.
         </p>
       </li>
     </ul>
@@ -299,7 +304,13 @@ layout: default
   <h2><a id="experience" href="#" class="collapse">Experience</a></h2>
 
   <div class="collapsed">
-    <h3>2018 - present Head of Operations at <a href="https://mattereum.com">Mattereum</a></h3>
+    <h3>201o - present Senior Technical Architect at the <a href="https://www.gov.uk/government/organisations/ministry-of-justice">Ministry of Justice</a></h3>
+    <p>
+      Technical Architect on the Cloud Platform team, responsible for ongoing development and support of the platform, as well as
+      encouraging and assisting in the adoption of the platform throughout the wider organisation.
+    </p>
+
+    <h3>2018 - 2019 Head of Operations at <a href="https://mattereum.com">Mattereum</a></h3>
     <p>
       Described by
       <a href="https://techcrunch.com/2018/11/11/mattereum-perhaps-the-worlds-weirdest-and-most-daring-startup-intends-to-own-literally-everything">TechCrunch</a>
@@ -322,15 +333,12 @@ layout: default
     <h3>2016 – 2018 Senior Technical Architect at the <a href="https://www.gov.uk/government/organisations/ministry-of-justice">Ministry of Justice</a></h3>
     <p>
       Working as part of multi-disciplinary, agile teams, I worked
-      on a variety of projects including <a
-                                           href="https://www.gov.uk/tax-tribunal">Appeal to the Tax
-                                           Tribunal</a>, taking the service through to public beta.
+      on a variety of projects including <a href="https://www.gov.uk/tax-tribunal">Appeal to the Tax Tribunal</a>, taking the service through to public beta.
     </p>
     <p>
       I designed and helped to implement an architecture based on
       loosely-coupled services intended to be drop-in components that
-      other services can use (e.g. a virus-scanning <a
-                                                      href="https://github.com/ministryofjustice/mojfile-uploader">file-uploader</a>).
+      other services can use (e.g. a virus-scanning <a href="https://github.com/ministryofjustice/mojfile-uploader">file-uploader</a>).
     </p>
     <p>
       I also helped to create a
@@ -462,6 +470,17 @@ layout: default
   <div class="collapsed">
     My side projects include the following;
     <ul>
+
+      <li>
+        <a href="https://blogdigitalronin.wordpress.com/2019/03/24/splitting-the-bill/">
+          <h3>Fair Shares</h3>
+        </a>
+        <p>
+          A very simple progressive web application (PWA) used to split a restaurant
+          bill unevenly between a group of people (e.g. because some didn't drink the
+          wine and others ordered dessert).
+        </p>
+      </li>
 
       <li>
         <a href="http://www.ticket-poker.org/">
